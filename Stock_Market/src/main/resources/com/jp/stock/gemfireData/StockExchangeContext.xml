@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:gfe-data="http://www.springframework.org/schema/data/gemfire"
+	xmlns:gfe="http://www.springframework.org/schema/gemfire"
+	xmlns:task="http://www.springframework.org/schema/task"
+    
+	
+	xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/data/gemfire http://www.springframework.org/schema/data/gemfire/spring-data-gemfire.xsd http://www.springframework.org/schema/gemfire
+	 http://www.springframework.org/schema/gemfire/spring-gemfire.xsd http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+	
+	<!--Spring Components Scan-->
+	<context:component-scan base-package="com.jp.stock"></context:component-scan>
+
+   <!--Scheduled Service -->
+    <task:annotation-driven/>
+
+	<!--GemFire Cache -->
+	<gfe:cache />
+
+	<!--Region for being used by the Record Bean -->
+	<gfe:partitioned-region  id="Stock"  colocated-with="Trade"/>
+	
+	<!--Region for being used by the Trade Bean -->
+	<gfe:partitioned-region  id="Trade" />
+	
+	<!--Region for being used by the UniqueSequence Bean -->
+	<gfe:partitioned-region  id="UniqueSequence" />
+
+	<!--Scan for annotated GemFire Repositories-->
+	<gfe-data:repositories base-package="com.jp.stock.integration.gemfire" />
+	
+	<!--GemFire transaction Management-->
+	<gfe:transaction-manager id="tx-manager" />
+
+</beans>
